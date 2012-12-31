@@ -1,0 +1,20 @@
+<page title="Pragmatic Unicode">
+<history>
+<what when="20120310T114500">Created.</what>
+</history>
+
+<p>This is a presentation I gave at PyCon 2012.
+You can read the slides and text on this page, or open the <a href='text/unipain/unipain.html'>actual presentation</a> in your browser,
+or watch the video:</p>
+
+<p align="center">
+<iframe width="500" height="369" src="http://www.youtube.com/embed/sgHbC6udIqc" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+</p>
+
+<p>Also, clicking the slide images will jump into the full presentation at that point.
+The Symbola font is included, but will have to be downloaded before some of the
+special symbols will appear.</p>
+
+<content/>
+
+</page>
