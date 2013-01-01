@@ -513,7 +513,7 @@
     difficult either. With knowledge and discipline, you can deal with Unicode
     easily and with grace.</p>
 
-    <p>I'll teach you five Facts of Life, and give you three pro tips that will
+    <p>I'll teach you five Facts of Life, and give you three Pro Tips that will
     solve your Unicode problems. We're going to cover the basics of Unicode,
     and how both Python 2 and Python 3 work.  They are different, but the
     strategies you'll use are basically the same.</p>
@@ -543,12 +543,12 @@
 
 <div class="text">
     <p>The first Fact of Life: everything in a computer is bytes.  Files on
-    disk are a series of bytes, and network connections transmit only bytes.
+    disk are a series of bytes, and network connections only transmit bytes.
     Almost without exception, all the data going into or out of any program you
     write, is bytes.</p>
 
-    <p>Bytes by themselves are meaningless, we need conventions to give them
-    meaning.</p>
+    <p>The problem with bytes is that by themselves they are meaningless, we
+    need conventions to give them meaning.</p>
 </div>
 
 <div class="slide fadeout">
@@ -563,8 +563,8 @@
 <div class="text">
     <p>To represent text, we've been using the ASCII code for nearly 50 years.
     Every byte is assigned one of 95 symbols. When I send you a byte 65, you
-    know that I mean an upper-case A.</p>
-
+    know that I mean an upper-case A, but only because we've agreed beforehand
+    on what each byte represents.</p>
 </div>
 
 <div class="slide fadein fadeout">
@@ -577,10 +577,7 @@
 </div>
 
 <div class="text">
-    <p>ISO Latin 1, or 8859-1, extended ASCII with 96 more symbols. This is
-    pretty much the best you can do to represent text as single bytes, 
-    because there's not much room left to add more symbols.</p>
-
+    <p>ISO Latin 1, or 8859-1, is ASCII extended with 96 more symbols.</p>
 </div>
 
 <div class="slide fadein">
@@ -593,8 +590,9 @@
 </div>
 
 <div class="text">
-    <p>Windows added 27 more symbols to produce CP1252.</p>
-
+    <p>Windows added 27 more symbols to produce CP1252.  This is pretty much
+    the best you can do to represent text as single bytes, because there's not
+    much room left to add more symbols.</p>
 </div>
 
 <div class="slide">
@@ -608,10 +606,12 @@
 </div>
 
 <div class="text">
-    <p>But Fact of Life #2 is that there are way more symbols in the world's
-    text than 256.  A single byte simply can't represent text world-wide.
+
+    <p>With character sets like these, we can represent at most 256 characters.
+    But Fact of Life #2 is that there are way more than 256 symbols in the
+    world's text.  A single byte simply can't represent text world-wide.
     During your darkest whack-a-mole moments, you may have wished that everyone
-    spoke English, but it simply isn't so. People need lots of symbols to 
+    spoke English, but it simply isn't so. People need lots of symbols to
     communicate.</p>
 
     <p>Fact of Life #1 and Fact of Life #2 together create a fundamental
@@ -632,7 +632,7 @@
 
 <div class="text">
     <p>There have been a number of attempts to resolve this conflict.
-    Single-byte character codes like ASCII map bytes to symbols, or characters.
+    Single-byte character codes like ASCII map bytes to characters.
     Each one pretends that Fact of Life #2 doesn't exist.</p>
 
     <p>There are many single-byte codes, and they don't solve the problem.
@@ -651,7 +651,7 @@
 <div class="text">
     <p>People tried creating double-byte character sets, but they were still
     fragmented, serving different subsets of people.   There were multiple
-    standards in place, and ironically, they weren't large enough to deal
+    standards in place, and they still weren't large enough to deal
     with all the symbols needed.</p>
 
 </div>
@@ -681,7 +681,7 @@
 <div class="text">
     <p>Unicode was designed to deal decisively with the issues with
     older character codes.  Unicode assigns integers, known as code points, to
-    characters.  It has room for 1.1 million code points, of which 110,000 are
+    characters.  It has room for 1.1 million code points, and only 110,000 are
     already assigned, so there's plenty of room for future growth.</p>
 
     <p>Unicode's goal is to have everything.  It starts with ASCII, and
@@ -713,6 +713,9 @@
     are written as 4-, 5-, or 6-digits of hex with a U+ prefix.  Every
     character has an unambiguous full name which is always in uppercase ASCII.
     </p>
+
+    <p>This string is designed to look like the word "Python", but doesn't use
+    any ASCII characters at all.</p>
 
 </div>
 
@@ -756,13 +759,14 @@
 
 <div class="text">
     <p>UTF-8 is easily the most popular encoding for storage and transmission
-    of Unicode.  It uses a variable number of bytes for each code point, ASCII
-    characters in particular are one byte each, using the same values as ASCII,
-    so ASCII is a subset of UTF-8.</p>
+    of Unicode.  It uses a variable number of bytes for each code point. The
+    higher the code point value, the more bytes it needs in UTF-8. ASCII
+    characters are one byte each, using the same values as ASCII, so ASCII is a
+    subset of UTF-8.</p>
 
-    <p>Here we show our exotic string as UTF-8.  The ASCII characters H and I are
-    single bytes, other characters use two or three bytes depending on their
-    code point value. Some code points require four bytes, though we aren't 
+    <p>Here we show our exotic string as UTF-8.  The ASCII characters H and i are
+    single bytes, and other characters use two or three bytes depending on their
+    code point value. Some Unicode code points require four bytes, but we aren't 
     using any of those here.</p>
 </div>
 
@@ -777,7 +781,9 @@
 </div>
 
 <div class="text">
-    <p>OK, enough theory, let's talk about Python 2.</p>
+    <p>OK, enough theory, let's talk about Python 2. In the slides, Python 2
+    samples have a big 2 in the upper-right corner, Python 3 samples will have
+    a big 3.</p>
 
 </div>
 
@@ -817,7 +823,8 @@
 
     <p>Notice that the word "string" is problematic.  Both "str" and "unicode"
     are kinds of strings, and it's tempting to call either or both of them
-    "string," but better to use more specific terms to keep things straight.</p>
+    "string," but it's better to use more specific terms to keep things
+    straight.</p>
 
 </div>
 
@@ -857,15 +864,16 @@
 </div>
 
 <div class="text">
-    <p>To convert between bytes and unicode, each has a method.  Unicode
+    <p>Bytes strings and unicode strings each have a method to convert it to
+    the other type of string.  Unicode
     strings have a .encode() method that produces bytes, and byte strings have
     a .decode() method that produces unicode. Each takes an argument, which
     is the name of the encoding to use for the operation.</p>
 
-    <p>We can define a Unicode string names my_unicode, and see that it has
+    <p>We can define a Unicode string named my_unicode, and see that it has
     9 characters.  We can encode it to UTF-8 to create the my_utf8 byte string,
-    which has 19 bytes.  As you'd expect, decoding the UTF-8 string produces
-    the original Unicode string.</p>
+    which has 19 bytes.  As you'd expect, reversing the operation by decoding 
+    the UTF-8 string produces the original Unicode string.</p>
 
 </div>
 
@@ -893,11 +901,11 @@
     isn't appropriate for the specified encoding.  Here we try to encode our
     exotic Unicode string to ASCII.  It fails because ASCII can only represent
     charaters in the range 0 to 127, and our Unicode string has code points
-    well outside that range.</p>
+    outside that range.</p>
 
     <p>The UnicodeEncodeError that's raised indicates the encoding being used,
-    in the form of the "codec", for coder/decoder, and the actual position
-    of the character that caused the problem.</p>
+    in the form of the "codec" (short for coder/decoder), and the actual
+    position of the character that caused the problem.</p>
 
 </div>
 
@@ -934,7 +942,7 @@
     accepts values up to 127, and our UTF-8 string has bytes outside that
     range.</p>
 
-    <p>Even UTF-8 can't decode any sequence of bytes.  Here we try to decode
+    <p>Even UTF-8 can't decode any sequence of bytes.  Next we try to decode
     some random junk, and it also produces a UnicodeDecodeError.   Actually,
     one of UTF-8's advantages is that there are invalid sequences of bytes,
     which helps to build robust systems:  mistakes in data won't be accepted as
@@ -1101,10 +1109,11 @@
     try to combine a byte string with a unicode string and the byte string can't be
     decoded as ASCII, then the operation will raise a UnicodeDecodeError.</p>
 
-    <p>This is the source of those painful UnicodeErrors.  Your code mixes unicode
-    strings and byte strings, and as long as the data is all ASCII, the implicit 
-    conversions silently succeed.  Once a non-ASCII character finds its way into 
-    your program, an implicit decode will fail, causing a UnicodeDecodeError.</p>
+    <p>This is the source of those painful UnicodeErrors.  Your code
+    inadvertently mixes unicode strings and byte strings, and as long as the
+    data is all ASCII, the implicit conversions silently succeed.  Once a
+    non-ASCII character finds its way into your program, an implicit decode
+    will fail, causing a UnicodeDecodeError.</p>
 
 </div>
 
@@ -1138,9 +1147,9 @@
 
         print my_unicode
 
-        my_utf8.encode('utf-8')
+        my_utf8.encode('utf-8')        # silly
 
-        my_string.encode('utf-8')
+        my_string.encode('utf-8')      # silly
         """)
     ]]]-->
     <div class='version-marker'>2</div>
@@ -1156,12 +1165,12 @@
     <span class='line'>UnicodeEncodeError: 'ascii' codec can't encode characters in</span>
     <span class='line'>          position 3-8: ordinal not in range(128)</span>
     <span class='blankline'>&nbsp;</span>
-    <span class='line'>&gt;&gt;&gt; my_utf8.encode('utf-8')</span>
+    <span class='line'>&gt;&gt;&gt; my_utf8.encode('utf-8')        # silly</span>
     <span class='line'>Traceback (most recent call last):</span>
     <span class='line'>UnicodeDecodeError: 'ascii' codec can't decode byte 0xe2 in</span>
     <span class='line'>          position 3: ordinal not in range(128)</span>
     <span class='blankline'>&nbsp;</span>
-    <span class='line'>&gt;&gt;&gt; my_string.encode('utf-8')</span>
+    <span class='line'>&gt;&gt;&gt; my_string.encode('utf-8')      # silly</span>
     <span class='line'>'Hello World'</span>
     </pre>
     <!--[[[end]]] }}}-->
@@ -1171,7 +1180,7 @@
     <p>There are lots of ways to combine two strings, and all of them will
     decode bytes to unicode, so you have to watch out for them.</p>
 
-    <p>First we use an ASCII format string, with unicode data.  The format
+    <p>Here we use an ASCII format string, with unicode data.  The format
     string will be decoded to unicode, then the formatting performed, resulting
     in a unicode string.</p>
 
@@ -1179,8 +1188,8 @@
     combine to produce a unicode string, because the byte string data is
     decoded as ASCII.</p>
 
-    <p>Simply attempting to print a unicode string will cause an implicit
-    encoding: output is always bytes, so the unicode strings has to be encoded
+    <p>Even just attempting to print a unicode string will cause an implicit
+    encoding: output is always bytes, so the unicode string has to be encoded
     into bytes before it can be printed.</p>
 
     <p>The next one is truly confusing: we ask to encode a byte string to UTF-8,
@@ -1189,10 +1198,15 @@
     into bytes.  So to perform the encoding you want, Python 2 needs a unicode
     string, which it tries to get by implicitly decoding your bytes as ASCII.</p>
 
-    <p>Lastly, we encode an ASCII string to UTF-8.  Here we're performing the same
-    implicit decode to get a unicode string we can encode, but since the string
-    is ASCII, it succeeds, and then goes on to encode it as UTF-8, producing 
-    the original byte string, since ASCII is a subset of UTF-8.</p>
+    <p>So you asked to encode to UTF-8, and you get an error about decoding ASCII.
+    It pays to look carefully at the error, it has clues about what operation is
+    being attempted, and how it failed.</p>
+
+    <p>Lastly, we encode an ASCII string to UTF-8, which is silly, encode
+    should be used on unicode string.  To make it work, Python performs the
+    same implicit decode to get a unicode string we can encode, but since the
+    string is ASCII, it succeeds, and then goes on to encode it as UTF-8,
+    producing the original byte string, since ASCII is a subset of UTF-8.</p>
 
 </div>
 
@@ -1266,7 +1280,7 @@
     and the "bytes" types stores bytes.  You can create a bytes literal with a b
     prefix.</p>
 
-    <p>So "str" in Python 2 is now called "bytes," and "unicode in Python 2 is 
+    <p>So "str" in Python 2 is now called "bytes," and "unicode" in Python 2 is
     now called "str".  This makes more sense than the Python 2 names, since 
     Unicode is how you want all text stored, and byte strings are only for 
     when you are dealing with bytes.</p>
@@ -1314,9 +1328,9 @@
     strings to unicode strings to complete an operation, every one of them is
     an error in Python 3.</p>
 
-    <p>In addition, Python 2 considers a Unicode string and a bytes string
+    <p>In addition, Python 2 considers a unicode string and a byte string
     equal if they contain the same ASCII bytes, and Python 3 won't.  A
-    consequence of this is that Unicode dictionary keys can't be found with
+    consequence of this is that unicode dictionary keys can't be found with
     byte strings, and vice-versa, as they can be in Python 2.</p>
 
 </div>
@@ -1329,19 +1343,19 @@
 
 <div class="text">
     <p>This drastically changes the nature of Unicode pain in Python 3.  In
-    Python 2, mixing Unicode and bytes succeeds so long as you only use ASCII
+    Python 2, mixing unicode and bytes succeeds so long as you only use ASCII
     data.  In Python 3, it fails immediately regardless of the data.</p>
 
     <p>So Python 2's pain is deferred: you think your program is correct, and
     find out later that it fails with exotic characters.</p>
 
-    <p>With Python 3, your code fails right off the bat, so even if you are
-    only dealing with ASCII, you have to explicitly deal with the difference
-    between bytes and Unicode.</p>
+    <p>With Python 3, your code fails immediately, so even if you are
+    only handling ASCII, you have to explicitly deal with the difference
+    between bytes and unicode.</p>
 
     <p>Python 3 is strict about the difference between bytes and unicode.
     You are forced to be clear in your code which you are dealing with.
-    This has been controversial.</p>
+    This has been controversial, and can cause you pain.</p>
 
 </div>
 
@@ -1392,7 +1406,7 @@
 </div>
 
 <div class="text">
-    <p>One of the changes in Python 3 because of this new strictness is how files are read.
+    <p>Because of this new strictness, Python 3 has changed how you read files.
     Python has always had two modes for reading files: binary and text.  In Python 2, it 
     only affected the line endings, and on Unix platforms, even that was a no-op.</p>
 
@@ -1404,15 +1418,16 @@
     read from the file is bytes, with no processing done on them.</p>
 
     <p>The implicit conversion from bytes to unicode uses the encoding returned
-    from locale.getpreferredencoding(), and it may not give you the results you expect.
-    For example, when we read hi_utf8.txt, it's being decoded using the locale's
-    preferred encoding, which since I created these samples on Windows, is "cp1252".
-    Like ISO 8859-1, CP-1252 is a one-byte character code that will accept any byte value, so it will
-    never raise a UnicodeDecodeError.  That also means that it will happily decode
-    data that isn't actually CP-1252, and produce garbage.</p>
+    from locale.getpreferredencoding(), and it may not give you the results you
+    expect.  For example, when we read hi_utf8.txt, it's being decoded using
+    the locale's preferred encoding, which since I created these samples on
+    Windows, is "cp1252".  Like ISO 8859-1, CP-1252 is a one-byte character
+    code that will accept any byte value, so it will never raise a
+    UnicodeDecodeError.  That also means that it will happily decode data that
+    isn't actually CP-1252, and produce garbage.</p>
 
-    <p>To get the file read properly, you should specify an encoding to use.  The open() function
-    now has an optional encoding parameter.</p>
+    <p>To get the file read properly, you should specify an encoding to use.
+    The open() function now has an optional encoding parameter.</p>
 
 </div>
 
@@ -1425,7 +1440,7 @@
 
 <div class="text">
     <p>OK, so how do we deal with all this pain? The good news it that the rules
-    to remember are simple, and they're the same for Python 2 or 3.</p>
+    to remember are simple, and they're the same for Python 2 and Python 3.</p>
 
 </div>
 
@@ -1446,7 +1461,7 @@
     <p>As we saw with Fact of Life #1, the data coming into and going out of
     your program must be bytes.  But you don't need to deal with bytes on the
     inside of your program.  The best strategy is to decode incoming bytes as
-    soon as possible, producing unicode.  You use Unicode throughout your
+    soon as possible, producing unicode.  You use unicode throughout your
     program, and then when outputting data, encode it to bytes as late as
     possible.</p>
 
@@ -1593,12 +1608,13 @@
 <div class="text">
     <p>Unfortunately, because the encoding for bytes has to be communicated
     separately from the bytes themselves, sometimes the specified encoding is
-    wrong.  For example, you may pull an HTML page from a web server, and
-    the HTTP header claims the page is 8859-1, but in fact, is encoded with UTF-8.</p>
+    wrong.  For example, you may pull an HTML page from a web server, and the
+    HTTP header claims the page is 8859-1, but in fact, it is encoded with
+    UTF-8.</p>
 
     <p>In some cases, the encoding mismatch will succeed and cause mojibake.
-    Other times, the encoding is invalid for the bytes, and will cause a UnicodeError.
-    </p>
+    Other times, the encoding is invalid for the bytes, and will cause a
+    UnicodeError of some sort.</p>
 
 </div>
 
@@ -1611,10 +1627,10 @@
 </div>
 
 <div class="text">
-    <p>It should go without saying, but you should explicitly test your Unicode
+    <p>It should go without saying: you should explicitly test your Unicode
     support.  To do this, you need challenging Unicode data to pump through
     your code.  If you are an English-only speaker, you may have a problem
-    doing this, because lots of Unicode data is hard to read.  Luckily, the
+    doing this, because lots of non-ASCII data is hard to read.  Luckily, the
     variety of Unicode code points mean you can construct complex Unicode
     strings that are still readable by English speakers.</p>
 
