@@ -1,4 +1,6 @@
-SLIDE_HTML = unipain.html
+SLUG = unipain
+
+SLIDE_HTML = $(SLUG).html
 
 SUPPORT = lineselect.js Symbola.ttf
 
@@ -22,19 +24,21 @@ clean:
 	rm -rf $(PNG_DIR)
 
 pngs:
-	\\app\\phantomjs-1.3.0-win32-dynamic\\phantomjs.exe phantom-slippy-to-png.js $(SLIDE_HTML) $(PNG_DIR)/
+	phantomjs phantom-slippy-to-png.js $(SLIDE_HTML) $(PNG_DIR)/
 
-PX = unipain.px
+PX = $(SLUG).px
 
 px $(PX): $(SLIDE_HTML)
-	python slippy_to_px.py $(SLIDE_HTML) $(PX)
+	python slippy_to_px.py $(SLIDE_HTML) $(PX) $(SLUG)
 
-WEBHOME = c:/ned/web/stellated/pages/text
-WEBPREZHOME = $(WEBHOME)/unipain
+WEBHOME = ~/web/stellated/pages/text
+WEBPREZHOME = $(WEBHOME)/$(SLUG)
+WEBPIXHOME = $(WEBHOME)/$(SLUG)_pix
 
 publish: $(PX) pngs
+	mkdir -p $(WEBPREZHOME) $(WEBPIXHOME)
 	cp -f $(PX) $(WEBHOME)
-	cp -f $(PNG_DIR)/* $(WEBHOME)
+	cp -f $(PNG_DIR)/* $(WEBPIXHOME)
 	cp -f $(SLIDE_HTML) $(SUPPORT) $(WEBPREZHOME)
 	cp -fR slippy $(WEBPREZHOME)
 	cp -fR highlight $(WEBPREZHOME)
